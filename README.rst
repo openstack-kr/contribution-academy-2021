@@ -4,3 +4,6 @@
 .. image:: https://readthedocs.org/projects/contribution-academy-2021/badge/?version=latest
   :target: https://contribution-academy-2021.readthedocs.io/ko/latest/?badge=latest
   :alt: Documentation Status
+
+.. image:: https://github.com/openstack-kr/contribution-academy-2021/blob/main/.github/workflows/action.yml
+  :alt: Github Actions Status
