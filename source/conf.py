@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Contribution 2021 Documentation build configuration file.
 #
 # This file only contains a selection of the most common options. For a full
