@@ -2,6 +2,5 @@ Doa Choi
 ==========================================================
 
 .. toctree::
-   :maxdepth: 1
-
-   test.rst
+   :maxdepth: 2
+   :caption: 목차:
