@@ -29,7 +29,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          sudo apt install python-tox
+          sudo apt install tox
       - name: Docs Lint and Sphinx build with tox
         run: tox
 
