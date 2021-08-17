@@ -1,3 +1,7 @@
 build
 .idea
-
+.tox
+venv
+.venv
+*.egg*
+.pytest_cache
