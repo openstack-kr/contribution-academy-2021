@@ -20,7 +20,7 @@
    jongsung_woo/index
    jiwon_yoon/index
    bomi_sung/index
-   jiho_joo/index
+   jiho_ju/index
    doa_choi/index
 
 
