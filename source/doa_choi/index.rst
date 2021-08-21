@@ -5,6 +5,8 @@ Doa Choi
    :maxdepth: 2
    :caption: 목차:
 
+   2주차_과제.rst
+   팀_블로그_가이드.rst
    test.rst
 
 
