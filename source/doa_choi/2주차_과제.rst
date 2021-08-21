@@ -744,4 +744,4 @@ ISP, 인터넷 서비스 제공업체들은 네트워크에 접속할 수 있는
 
  .. image:: images/2week_2-3.png
 
- .. image:: images/2wek_2-4.png
+ .. image:: images/2week_2-4.png
