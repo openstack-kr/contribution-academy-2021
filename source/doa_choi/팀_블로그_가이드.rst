@@ -89,7 +89,7 @@
 
  .. code-block:: none
 
-    tox -e docs
+    tox -e doc8
      (or) tox
 
 
