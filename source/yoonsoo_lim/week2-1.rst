@@ -62,4 +62,45 @@
 1.3 cliff/app.py
 ''''''''''''''''''''''
 
-    * app.py한테 argv값을 전달하며
+    * app.py의 run()한테 argv값(server list)을 전달한다.
+    * 그리고 279L에 run_subcommand를 실행시키는데 저것이 무엇인지 한번 보자
+
+    .. code-block:: python
+
+        279    result = self.run_subcommand(remainder)
+
+
+    * run_subcommand함수의 365L을 보면 find_command라는 함수가 있는데 뭔가
+      명령어를 실행시키는 파일을 찾는거 같다.
+
+    .. code-block:: python
+
+        365    subcommand = self.command_manager.find_command(argv)
+
+
+1.4 cliff/commandmanager.py
+'''''''''''''''''''''''''''''''
+
+    * find_command함수의 114~115L의 self.commands를 출력을 해보면 여러 명령어들이 딕셔너리 형태로
+      들어가 있다.
+    * 그 중에 name(value: server list)의 값이 명령어 딕셔너리에 있으면 그것을 found에 넣는다.
+
+    .. code-block:: python
+
+        97    def find_command(self, argv):
+        114     if name in self.commands:
+        115         found = name
+
+    * self.commands의 키값중에 found(server list)에 해당하는 value값을 cmd_ep에 넣는데
+      그 값을 확인 해보면 server list라는 옵션은 compute/v2/server.py의 ListServer라는
+      함수가 처리하는거 같다!
+
+    .. code-block:: python
+
+        123    cmd_ep = self.commands[found]
+
+    .. code-block:: python
+
+        >>>  print(cmd_ep)
+        EntryPoint(name='server_list', value='openstackclient.compute.v2.server:ListServer', group='openstack.compute.v2')
+
