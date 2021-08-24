@@ -6,3 +6,4 @@ Bomi sung
     :caption: Week 2
 
     task/week2_1.rst
+    task/week2_2.rst
