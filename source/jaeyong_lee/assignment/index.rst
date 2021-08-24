@@ -1,8 +1,10 @@
-Jaeyong Lee
+assignment
 ==========================================================
 
 .. toctree::
    :maxdepth: 2
    :caption: 목차:
 
-   assignment/index
+   week2-1.rst
+   
+   
