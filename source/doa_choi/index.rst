@@ -7,6 +7,3 @@ Doa Choi
 
    2주차_과제.rst
    팀_블로그_가이드.rst
-   test.rst
-
-
