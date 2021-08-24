@@ -6,5 +6,5 @@ assignment
    :caption: 목차:
 
    week2-1.rst
-   
+   week2-2.rst
    
