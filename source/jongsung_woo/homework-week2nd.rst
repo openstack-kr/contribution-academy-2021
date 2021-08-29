@@ -100,13 +100,13 @@ Glossary
 가상 머신을 생성하기 위한 CLI 명령어는 :code:`openstack server create` 명령어를 사용하면 되는데, 몇가지 argument를 필수로 입력해야 한다.
 
 * flavor: 가상머신의 컴퓨팅 리소스(compute, memory, storage)의 preset이다. GUI 화면에서 인스턴스 생성 단계의 'Flavor'에 해당는 부분이다. :code:`flavor list` 명령어를 사용해서 id와 name을 확인할 수 있다.
-    .. image:: images/server-create-flavor.png
+    .. image:: images/2nd-week_server-create-flavor.png
         :width: 600
 * image: 인스턴스 사용에 생성할 베이스 이미지. GUI 화면에서 인스턴스 생성 단계의 '소스'에 해당하는 부분이다. :code:`image list` 명령어를 사용해서 id와 name을 확인할 수 있다.
-    .. image:: images/server-create-image.png
+    .. image:: images/2nd-week_server-create-image.png
         :width: 600
 * network : 인스턴스서서 사용할 네트워크. GUI 화면에서 인스턴스 생성 단계의 '네트워크'에 해당하는 부분이다. :code:`network list` 명령어를 사용해서 id와 name을 확인할 수 있다.
-    .. image:: images/server-create-network.png
+    .. image:: images/2nd-week_server-create-network.png
         :width: 600
 
 위 정보를 취합해 아래 명령어를 완성할 수 있다.
@@ -180,18 +180,17 @@ ubuntu 클라우드 이미지 배포판을 다운로드받는다.
 
 floating ip를 생성하고 이전 :code:`2-2` 과제에서 생성한 :code:`ubuntu20` 인스턴스에 할당할 것이다.
 
-가상머신 인스턴스는 기본적으로 OpenStack에서 생성한, 가상머신 인스턴스끼리 통신할 수 있는 네트워크망을 제공한다. 이를 보통 :code:`내부`라고 불리우며, 외부와 통신을 하기 위해 외부에 속한 ip와 인스턴스를 연결해주게 되는데 이를 `공식 문서 <https://docs.openstack.org/ocata/user-guide/cli-manage-ip-addresses.html>`_에서는 :code:`associate` / :code:`disassociate` floating ip라고 표현한다.
+가상머신 인스턴스는 기본적으로 OpenStack에서 생성한, 가상머신 인스턴스끼리 통신할 수 있는 네트워크망을 제공한다. 이를 보통 :code:`내부` 라고 불리우며, 외부와 통신을 하기 위해 외부에 속한 ip와 인스턴스를 연결해주게 되는데 이를 `공식 문서 <https://docs.openstack.org/ocata/user-guide/cli-manage-ip-addresses.html>`_ 에서는 :code:`associate` / :code:`disassociate` floating ip라고 표현한다.
 
-floating ip를 생성하기 전에 먼저 floating ip를 제공할 수 있는 :code:`pool`을 확인해야 한다. :code:`floating ip pool list` 명령어로 확인할 수 있다.
+floating ip를 생성하기 전에 먼저 floating ip가 속해있는 네트워크 대역을 선택해야 한다. 현재 구성중인 네트워크 대역은 :code:`network list` 명령어로 확인할 수 있다.
 
 .. code-block:: bash
     :linenos:
 
     openstack \
-      floating ip \
-      pool list
+      network list \
 
-floating ip는 :code:`floating ip create` 명령어로 생성할 수 있으며 인자로 pool의 이름을 기재한다. 현재 프로젝트의 모든 floating ip 리스트는 :code:`floating ip list` 로 확인할 수 있다. 
+floating ip는 :code:`floating ip create` 명령어로 생성할 수 있으며 인자로 network 이름을 기재한다. 현재 프로젝트의 모든 floating ip 리스트는 :code:`floating ip list` 로 확인할 수 있다. 
 
 .. code-block:: bash
     :linenos:
@@ -211,3 +210,99 @@ floating ip는 :code:`floating ip create` 명령어로 생성할 수 있으며 �
       floating ip \
       ubuntu20 \                # floating ip를 associated할 인스턴스 이름
       192.168.0.100          # associate 시킬 floating ip의 주소 또는 id
+
+위 과정을 통해 flaoting ip :code:`192.168.0.100` 아이피를 생성했던 서버 :code:`ubuntu20` 에 붙였다. ssh 접속 테스트를 위해선 OpenStack에서 방화벽 역할을 하는 :code:`security group` 의 :code:`security group rule` 에 22번 포트를 풀어줘야 하는데, 해당 서버 인스턴스가 속해있는 security group을 찾아 rule을 추가해주어야 한다.
+
+현재 서버 인스턴스가 속해있는 security group은 :code:`server show <server id/name>` 으로 확인수 있으며 전체 security group은 :code:`security group list` 로 확인할 수 있다. 서버의 security gorup을 확인할 때 :code:`project_id` 부분도 잘 봐야 하는데 기본 :code:`default` 라는 이름으로 생성되어 있는 security group이 많으므로 해당 security group이 속해있는 project를 구분하기 위해 확인해야 한다.
+
+security group의 id를 확인했으면 rule을 추가하면 해당 security group에 속해있는 인스턴스는 해당 rule에 적용받게 된다. rule 추가는 :code:`security group rule create` 명령어를 사용해서 추가한다.
+
+.. code-block:: bash
+    :linenos:
+
+    openstack \
+      security group rule create \
+      --protocol tcp \
+      --dst-port 22 \
+      1309a8a3-7af9-4bf0-a614-5e935d56c219      # security group id
+
+
+2-4 10.8.0.0/24 네트워크를 만들고 public network와 연결하는 과정을 cli로 해보기  (optional)
+===============================================================================================================
+
+OpenStack에선 :code:`project` , :code:`provider network` 두가지가 있다. project network는 완벽하게 격리되고 다른 프로젝트간 공유되지 않는 네트워크이고 provider network는 외부(기존 인프라)에서 제공하고 있는 물리 네트워크 레이어와 연결되어 외부 엑세스가 가능한 네트워크이다. provider network의 경우 해당 네트워크를 위한 외부에서 제공하는 게이트웨이, DHCP 서버등이 필요하다.
+
+지금 만들어 볼 것은 project network, self-service netowkr이다. horizon에서 현재 네트워크 토폴로지를 확인하면 아래와 같이 외부와 연결되는 :code:`public, 192.168.100.0/24` network가 있고 :code:`router`가 있어서 내부 인스턴스끼리만 연결이 가능한 :code:`private, 10.0.0.0/24` network가 구성되어 있다.
+
+.. image:: images/2nd-week_network-topology_1.png
+    :width: 600
+
+문제를 해결하기 위해선 :code:`private, 10.0.0.0/24` network와 동일한 형태로 network를 하나 만들고 public network와 연결을 하기 위한 router를 생성, 연결해주는 작업이 필요하다.
+
+먼저 :code:`network create` 명령어를 사용해서 network 를 생성한다.
+
+.. code-block:: bash
+    :linenos:
+
+    openstack network create \
+      --no-share \
+      --enable \
+      --internal \
+      private_10.8.0.0
+
+그 다음은 해당 네트워크의 subnet을 생성한다.
+
+.. code-block:: bash
+    :linenos:
+
+    openstack \
+      subnet create \
+      --network private_10.8.0.0 \
+      --dns-nameserver 8.8.8.8 \
+      --gateway 10.8.0.1 \
+      --subnet-range 10.8.0.0/24 \
+      private_10.8.0.0-subnet
+
+위 작업을 통해서 10.8.0.0/24 범위의 subnet을 가진 network :code:`private_10.8.0.0` 이 만들어졌다. 토폴로지를 확인하면 아래와 같이 구성된 것을 확인할 수 있다.
+
+.. image:: images/2nd-week_network-topology_2.png
+    :width: 600
+
+이제 생성된 :code:`private_10.8.0.0` 네트워크를 외부와 연결시키기 위해선 현재 외부와 통신이 가능한 network(provider network)와 통신할 라우터를 생성해야 한다.
+
+.. code-block:: bash
+    :linenos:
+
+    openstack \
+    router create \
+    router_10.8.0.0
+
+.. image:: images/2nd-week_network-topology_3.png
+    :width: 600
+
+이제 생성한 라우터를 내부 인터페이스 서브넷으로 :code:`private_10.8.0.0-subnet` , 외부 게이트웨이트로 public network를 설정한다.
+
+.. code-block:: bash
+    :linenos:
+
+    openstack \
+      router add subnet \
+      router_10.8.0.0 \
+      private_10.8.0.0-subnet
+
+    openstack \
+      router set \
+      --external-gateway public \
+      router_10.8.0.0
+
+위 작업을 정상적으로 완료하면 아래와 같은 토폴로지를 확인할 수 있으며 해당 네트워크로에 속한 머신에서 외부 커넥션 테스트를 할 수 있다.
+
+.. image:: images/2nd-week_network-topology_4.png
+    :width: 600
+
+----------------
+Reference
+----------------
+
+1. https://docs.openstack.org/python-openstackclient/latest/cli/index.html
+2. https://docs.openstack.org/newton/ko_KR/install-guide-rdo/launch-instance-networks-selfservice.html
