@@ -16,8 +16,7 @@ OpenStack 팀 2주차 진행사항 : CLI와 친해지기
 4. OpenStack CLI를 사용해서 실행
 
 1. cirros image로 인스턴스 생성을 cli로 해보기
----------
-
+----
 사용한 명령어 :
 
 `> openstack server create --flavor <flavor name> --image <image file name> --nic net-id=<network-provider id> <instance name>`
@@ -33,7 +32,7 @@ OpenStack 팀 2주차 진행사항 : CLI와 친해지기
 
 
 2. ubuntu 이미지를 받고, root password를 설정한 다음 cli로 이미지 등록한 후 인스턴스 생성하고 접속까지 하기
----------
+----
 
 2-1) 우분투 이미지 파일 다운로드 : `wget https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img`
 
@@ -72,7 +71,7 @@ OpenStack 팀 2주차 진행사항 : CLI와 친해지기
 
 
 3.  cli로 floating ip 생성 후 인스턴스에 할당 / 해제 해보기
----------
+----
 
     3-1) CMD 명령어 찾기
 
@@ -110,14 +109,14 @@ OpenStack 팀 2주차 진행사항 : CLI와 친해지기
 
 
 4. 10.8.0.0/24 네트워크를 만들고 public network와 연결하는 과정을 cli로 해보기  (optional)
----------
+----
 
     4-1) 이 작업이 네트워크를 private으로 floating ip를 생성하고 public network와 연결하는 작업을 의미하는 걸까요?
 
     4-2) 해당 네트워크를 설정하는 작업에 대해 구글링을 어떻게 할 지 키워드를 몰라서 문의드립니다.
 
 5. Error 처리
----------
+----
 
     5-1) 작업하면서 워낙 인스턴스를 많이 생성 / 삭제하다보니 아래와 같은 에러명을 자주 목격했습니다.
 
@@ -129,7 +128,7 @@ OpenStack 팀 2주차 진행사항 : CLI와 친해지기
 
 
 6. Reference
----------
+----
 
 - `우분투 인스턴스 비밀번호 설정하기 <https://techglimpse.com/nova-boot-instance-with-password/>`_
 
