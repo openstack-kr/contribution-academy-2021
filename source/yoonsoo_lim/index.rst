@@ -8,3 +8,5 @@ Yoonsoo Lim
     week2.rst
 
     week2-1.rst
+
+    week3.rst
