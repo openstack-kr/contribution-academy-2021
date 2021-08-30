@@ -1,3 +1,7 @@
 Seunghyun Lim
 ==========================================================
-.. image::
+
+.. toctree::
+   :maxdepth: 2
+
+   posts/index
