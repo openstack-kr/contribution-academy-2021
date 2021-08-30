@@ -218,3 +218,52 @@
             <bound method ListServer.take_action of <openstackclient.compute.v2.server.ListServer object at 0x00000260BA41BF70>>
 
     * 이 함수를 통해 입력한 server list옵션에 해당하는 결과값을 return받아온다.
+
+
+1.5 nova 의 어떤 API를 호출하여 결과를 받아오나요? ( 어떤 URI 를 호출하나요? )
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    * 이번엔 코드를 분석하여 찾지않고 --debug옵션을 활용하여 찾아보았다.
+    * 명령어처리과정은 처음에 keystone으로부터 token이라는것을 받아야 API들을 호출할 수 있다.
+    * 그러면 debug옵션을 통해 token을 발급받고 그 뒤에 nova의 어떤 api를 호출하는지 알 수 있을것이다!
+
+    .. image:: images/token_info.png
+
+    |
+
+    * 정보를 좀 더 보면 GET 형식으로  http://211.37.148.135/compute/v2.1/servers/detail 를
+      호출하여 정보를 받아오는것을 확인할 수 있다.
+
+    .. image:: images/NovaApi_info.png
+
+1.6 결과를 이쁘게 table 형식으로 출력해주는 함수는 무엇일까요?
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    * server list라는 명령어를 처리하는 함수의 take_action()을 실행하고 분명 테이블을 만들것이다.
+    * 그러면  cliff/display.py의 115L 밑에 있는 함수들 일것이다.
+
+    .. code-block:: python
+
+        File: cliff/display.py
+
+            112 def run(self, parsed_args):
+            ...
+            115     column_names, data = self.take_action(parsed_args)
+            ...
+            117     self.produce_output(parsed_args, column_names, data)
+
+
+    |
+
+    * 다음으로 넘어가면 아래와 같은 함수가 나오는데 여기에 122L이 바로 테이블을 출력해주는 함수이다.
+    * 들어가보면 cliff/formatters/table.py의 emit_list가 테이블을 만들어 츌력해준다.
+
+    .. code-block:: python
+
+        File: cliff/lister.py
+
+            83   def produce_output(self, parsed_args, column_names, data):
+            ...
+            122      self.formatter.emit_list(
+            123          columns_to_include, data, self.app.stdout, parsed_args,
+            124      )
