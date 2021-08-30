@@ -6,3 +6,4 @@ Jinseok Kim
 	:caption: 목차:
 	
 	2week-cli/index
+	2week-serverlist/index
