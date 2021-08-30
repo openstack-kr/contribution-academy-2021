@@ -1,10 +1,10 @@
-CLI와 친해지기
-================
+Week 1. CLI와 친해지기
+=======================
 
 gui로 했던 모든 과정을 cli로 하는 방법을 찾아보면서 cli 도구와 친해지는 시간을 갖습니다.
 
 0) devstack 접속하여 Path 설정하기
---------------------------
+-------------------------------------
 #. ssh로 devstack을 설치한 터미널에 접속한다.
     * `ssh -i <pem key> <user@hostname>`
 #. devstack을 설치한 계정으로 접근한다.
@@ -18,7 +18,8 @@ gui로 했던 모든 과정을 cli로 하는 방법을 찾아보면서 cli 도�
     * OS_AUTH_URL
     * OS_AUTH_TYPE
 #. devstack에서 제공하는 스크립트는 아래의 명령어로 실행할 수 있다.
- .. code-block:: bash
+
+.. code-block:: bash
 
     source ~/devstack/openrc <account_name> <project name>
     source ~/devstack/openrc admin admin
@@ -26,8 +27,9 @@ gui로 했던 모든 과정을 cli로 하는 방법을 찾아보면서 cli 도�
 
 
 1) cirros image로 인스턴스 생성을 cli로 해보기
-----------------------------------------
+----------------------------------------------------
 * 인스턴스 생성은 인스턴스 이름, flavor의 종류, 네트워크 영역을 필수로 입력해주어야 한다.
+
 .. code-block:: bash
 
     stack@lsh-wallaby:~/devstack$ openstack server create
@@ -44,12 +46,13 @@ gui로 했던 모든 과정을 cli로 하는 방법을 찾아보면서 cli 도�
 
 
 2) ubuntu 이미지를 받고, root password를 설정한 다음 cli로 이미지 등록한 후 인스턴스 생성하고 접속까지 하기
------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
 #. ubuntu 이미지 파일 다운받기
     * `$ curl https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img ./ubuntu-20.04.img`
 #. root password 설정
     * 내려받은 이미지에 libguestfs-tools 패키지를 설치하여 root password를 설정합니다.
     * `sudo virt-customize -a ubuntu-20.04.img --root-password password:secret`
+
 .. code-block:: bash
 
     stack@lsh-wallaby:~/glance/images$ sudo virt-customize -a ubuntu-20.04.img --root-password password:secret
@@ -60,6 +63,7 @@ gui로 했던 모든 과정을 cli로 하는 방법을 찾아보면서 cli 도�
 
 #. 비밀번호 설정한 이미지 파일로 이미지 생성하기
     * `$ glance image-create --name ubuntu-20.04 --visibility private --disk-format qcow2 --container-format bare < ubuntu-20.04.img`
+
 .. code-block:: bash
 
     stack@lsh-wallaby:~$ glance image-create --name ubuntu-20.04 --visibility private --disk-format qcow2 --container-format bare < ubuntu-20.04.img
@@ -131,14 +135,14 @@ gui로 했던 모든 과정을 cli로 하는 방법을 찾아보면서 cli 도�
 #. 접속 체크
 
 .. code-block:: bash
+
     ubuntu login: root
     Password:
     Welcome to Ubuntu 20.04.3 LTS (GNU/LINUX 5.4.0-81-generic x86_64)
     root@ubuntu:~#
-    root@ubuntu:~#
 
 3) cli로 floating ip 생성 후 인스턴스에 할당 / 해제 해보기
--------------------------------------
+-----------------------------------------------------------------------------------------
 #. floating ip 생성하기
 
 .. code-block:: bash
@@ -181,7 +185,7 @@ gui로 했던 모든 과정을 cli로 하는 방법을 찾아보면서 cli 도�
 
 
 4) 10.8.0.0/24 네트워크를 만들고 public network와 연결하는 과정을 cli로 해보기  (optional)
--------------------------------------------
+-------------------------------------------------------------------------------------------
 #. private 네트워크 만들기
     * `$ openstack network create private-admin`
 #. 10.8.0.0/24 서브넷 만들어 private에 할당하기
