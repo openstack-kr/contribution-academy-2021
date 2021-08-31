@@ -12,6 +12,7 @@ OpenStack 팀 2주차 : openstack server list 명령어 동작 원리 파악
 0. 상속관계
 -------------------------------------------------------------
 openstackclient  -> osc_lib  -> clif
+
 OpenStackShell -> OpenStackShell ->  App
 
 1. 인자로 입력받은 server list 를 어떻게 구별해내는가? & 2. server list  라는 명령어를 처리하는 파일은 무엇인가?
@@ -309,12 +310,16 @@ self = {List Server} <openstackclient.compute.v2.server.ListServer object at 0x1
 
 결론
 """"""""""""""""""""""""""""""
-로딩
 => plug-in 로딩
+
 => 모듈을 command manager 갖고 있다
+
 => 인자로 넘어온게 command list 에 있으면 인자에 맞는 EP 를 반환해준다.
+
 => EP 를 로딩시킨다.
+
 => 해당 클래스의 take actions 라는 함수를 실행시킨다.
+
 
 
 3. openstackcli 는 어떻게 nova api 주소를 알아내나요? & 4. nova 의 어떤 API를 호출하여 결과를 받아오나요?
@@ -502,9 +507,13 @@ body = instance 정보
 결론
 """"""""""""""""""""""""""""""
 => compute_client 객체를 만든다.
+
 => novaclient/v2/servers.py 의 list 메소드 실행 (url 전달)
+
 => novaclient/base.py 의 _list 메소드 실행
+
 => keystoneauth1/adapter.py 에서 get 방식 호출
+
 
 
 **http://211.37.148.101/compute/v2.1/servers/detail** 을 통해 호출한다.
@@ -602,8 +611,11 @@ table 을 만들때 PrettyTable 클래스의 인스턴스를 생성한다.
 결론
 """"""""""""""""""""""""""""""
 => cliff/display.py 에서 produce_output 메소드 호출
+
 => cliff/lister.py 에서 _generate_columns_and_selector 호출 : columns_to_include, selector 정의
+
 => cliff/lister.py 에서 emit_list 호출
+
 => cliff/table.py 에서 prettytable.PrettyTable 호출
 
 
