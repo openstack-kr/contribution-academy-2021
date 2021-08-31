@@ -7,3 +7,4 @@ Sanghoo Lee
 
    week2.rst
    week2-2.rst
+   week3.rst
