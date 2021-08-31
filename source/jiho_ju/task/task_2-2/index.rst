@@ -79,10 +79,11 @@ ret_val = **super(OpenStackShell, self).run(argv) 을 통해 결과값이 출력
 
 initialize_app 메소드   super(OpenStackShell, self).initialize_app(argv) 을 통해 osc_lib/shell.py/OpenStackShell initialize_app 메소드를 호출한다.
 
-5. osc_lib/shell.py/OpenStackShell
+5. stevedore 를 통해 plugin 들을 load 해주자!
 
 .. code-block:: python
 
+    # osc_lib/shell.py/OpenStackShell
     def initialize_app(self, argv):
         ...
         self._load_plugins()
@@ -90,16 +91,37 @@ initialize_app 메소드   super(OpenStackShell, self).initialize_app(argv) 을 
         self._load_commands()
         ...
 
-6.1 openstackclient/shell.py/OpenStackShell
+5.1 self._load_plugins() 실행
 
 .. code-block:: python
 
+    # openstackclient/shell.py/OpenStackShell
     def _load_plugins(self):
+		for mod in clientmanager.PLUGIN_MODULES:
 		...
-		cmd_group = 'openstack.' + api.replace('-', '_') + version # cmd_group = "openstack.compute.v2"
-        self.command_manager.add_command_group(cmd_group)
+		if version_opt:
+			api = mod.API_NAME # "compute"
+		...
+		version = '.v' + version_opt.replace('.', '_').split('_')[0]
+		cmd_group = 'openstack.' + api.replace('-', '_') + version
+		self.command_manager.add_command_group(cmd_group)
+		...
 
-6.2 venv/lib/python3.9/site-packages/cliff/commandmanager.py/CommandManager
+- PLUGIN_MODULES 는 다음과 같다.
+
+.. code-block:: bash
+
+    [openstack.cli.base]
+    compute = openstackclient.compute.client
+    identity = openstackclient.identity.client
+    image = openstackclient.image.client
+    network = openstackclient.network.client
+    object_store = openstackclient.object.client
+    volume = openstackclient.volume.client
+
+각 PLUGIN_MODULES 에 해당하는 command_group 과 command 들을 CommandManager obejct 에 업로드한다.
+
+5.1.1 venv/lib/python3.9/site-packages/cliff/commandmanager.py/CommandManager
 
 .. code-block:: python
 
@@ -107,6 +129,12 @@ initialize_app 메소드   super(OpenStackShell, self).initialize_app(argv) 을 
         """Adds another group of command entrypoints"""
         if group:
             self.load_commands(group)
+
+- self : commandmanager.CommandManager object
+- group : \"openstack.compute.v2\"
+- load_commands(group) 호출
+
+.. code-block:: python
 
     def load_commands(self, namespace):
         """Load all the commands from an entrypoint"""
@@ -119,25 +147,39 @@ initialize_app 메소드   super(OpenStackShell, self).initialize_app(argv) 을 
             self.commands[cmd_name] = ep.entry_point
         return
 
-5번의 과정을 통해 API version 에 대한 설정(뭔지는 잘 모르겠다ㅠㅠ)과 각 API version으로 cmd group을 나눠 각각에 해당하는 명령어가 OpenStackShell 객체의 commands 딕셔너리에 저장이된다.
+- **self.group_list.append(namespace)** : command.Command object group_list 에 \"openstack.compute.v2\" 를 추가
+- stevedore.ExtensionManager(namespace) 호출 시 namespace 에 해당하는 Extension object 들을 생성 후 반환한다.
+    - Extension(ep.name, ep, plugin, obj)
+        - **ep.name**: server_list
+        - **ep**: EntryPoint 인스턴스
+        - **plugin**: ListServer class
+        - **obj**: None
+- ep: namespace 에 해당하는 Extension 인스턴스들
+- ep.name : 예) \"server_list\"
+- cmd_name: 예) \"server list\"
+- self.commands[cmd_name] = ep.entry_point
+    - self: CommandManager object
+    - ep.entry_point: EntryPoint 인스턴스
+
+5번의 과정을 통해 각 PLUGIN_MODULES 에 해당하는 cmd_group 과 command 가 CommandManager object 에 업로드 된다.
 
 예를 들어 키 값에 명령어 name 이 들어가고 키 값의 value 값은 EntryPoint 객체가 할당된다.
-    - key: "server list"
-    - value: EntryPoint(name='server_list', value='openstackclient.compute.v2.server:ListServer', group='openstack.compute.v2')
+    - key: \"server list\"
+    - value: EntryPoint(name=\'server_list\', value=\'openstackclient.compute.v2.server:ListServer\', group=\'openstack.compute.v2\')
 
-5번의 self._load_plugins() 수행 후 OpenStackShell 객체
+5번의 self._load_plugins() 수행 후
 
 - api_version
-    - {'compute': '2.1', 'identity': '3', 'image': '2', 'network': '2', 'object_store': '1', 'volume': '3'}
+    - {\'compute\': \'2.1\', \'identity\': \'3\', \'image\': \'2\', \'network\': \'2\', \'object_store\': \'1\', \'volume\': \'3\'}
 - command_manager.CommandManager object
     - group_list
-        - ['openstack.cli', 'openstack.compute.v2', 'openstack.identity.v3', 'openstack.image.v2', 'openstack.network.v2', 'openstack.object_store.v1', 'openstack.volume.v3']
+        - [\'openstack.cli\', \'openstack.compute.v2\', \'openstack.identity.v3\', \'openstack.image.v2\', \'openstack.network.v2\', \'openstack.object_store.v1\', \'openstack.volume.v3\']
 
-6.1 을 통해 openstack.cli 를 제외한 다른 group list 가 추가되고 각 group에 해당하는 command 들이 OpenStackShell 객체의 commands dict에 할당이 되었다.
+과정 5 을 통해 openstack.cli 를 제외한 다른 group list 가 추가되고 각 group에 해당하는 command 들이 OpenStackShell 객체의 commands dict에 할당이 되었다.
 
-self._load_commands() 를 통해 group_list 에 "openstack.common", "openstack.extension" 이 추가가 되었고 그에 해당하는 command 들이 추가되었다.
+self._load_commands() 를 통해 group_list 에 \"openstack.common\", \"openstack.extension\" 이 추가가 되었고 그에 해당하는 command 들이 추가되었다.
 
-3~6 번 과정을 통해 API version 에 상응하는 cmd group이 추가가 되었고 각 cmd group 에 해당하는 command 들이 OpenStackShell object 의 command 에 업로드 되었다.
+3~5 번 과정을 통해 각 PLUGIN_MODULES 에 해당하는 cmd_group 과 command 가 CommandManager object 에 업로드 되었다.
 
 1.2 인자 값 server list 가 OpenStackShell object command dict 에 존재 여부 확인
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -300,105 +342,114 @@ openstackclient.compute.v2.server.ListServer 객체의 메소드 take_action 을
 3. openstackcli 는 어떻게 nova api 주소를 알아내나요?
 ----------------------------------------------------------------
 
-- 솔직히 잘 모르겠지만 최대한 알아본만큼 적겠습니다ㅠㅠ
+\"server list\" 기준
 
 .. code-block:: python
 
-   # venv/lib/python3.9/site-packages/cliff/display.py
-   class DisplayCommandBase(command.Command, metaclass=abc.ABCMeta):
-       def run(self, parsed_args):
+    # site-packages/cliff/app.py
+    class App(object):
+        ...
+
+        def run_subcommand(self, argv):
+        ...
+        self.prepare_to_run_command(cmd)
+        ...
+
+- self: OpenStackShell object
+- cmd: <openstackclient.compute.v2.server.ListServer object>
+
+.. code-block:: python
+
+    # osc_lib/shell.py
+    def prepare_to_run_command(self, cmd):
+        ...
+        if cmd.auth_required:
+            # Trigger the Identity client to initialize
+            self.client_manager.session.auth.auth_ref = \
+
+- self: OpenStackShell object
+
+.. code-block:: python
+
+    # osc_lib/clientmanager.py
+    @property
+    def auth_ref(self): # self: openstackclient.common.clientmanager.ClientManger object
+        ...
+        if not self._auth_ref:
             ...
-            column_names, data = self.take_action(parsed_args)
-            ...
-            return 0
-
-self.take_action(parsed_args) 을 실행
+            self._auth_ref = self.auth.get_auth_ref(self.session)
+        return self._auth_ref
 
 .. code-block:: python
 
-   # openstackclient/compute/v2/server.py
-   def take_action(self, parsed_args):
-     compute_client = self.app.client_manager.compute
-     ...
+    # site-packages/keystoneauth1/identity/generic/base.py
+    def get_auth_ref(self, session, **kwargs):
+        if not self._plugin:
+            self._plugin = self._do_create_plugin(session)
 
-1. 먼저 ClientManager 가 keystone 에 login 하는 과정을 수행한다.
-2. compute service client 를 생성하여 compute_client 변수에 할당해준다.
+        return self._plugin.get_auth_ref(session, **kwargs)
 
-.. code-block:: python
-
-    # openstackclient.compute/client.py
-    def make_client(instance):
-        ...
-        # <class 'openstackclient.api.compute_v2.APIv2'> 생성
-        compute_api = utils.get_client_class(
-            API_NAME, # API_NAME="compute"
-            version.ver_major, # 2
-            COMPUTE_API_VERSIONS, # {'2': 'openstackclient.api.compute_v2.APIv2',}
-        )
-        ...
-        # 주어진 version 에 기반하여 client object 를 Initialize 한다.
-        client = nova_client.Client(
-            version,
-            session=instance.session,
-            extensions=extensions,
-            http_log_debug=http_log_debug,
-            timings=instance.timing,
-            region_name=instance.region_name,
-            **kwargs
-        )
-        # client 객체 api 에 <openstackclient.api.compute_v2.APIv2 object at 0x7fe4488167f0> 가 할당
-        client.api = compute_api(
-            session=instance.session,
-            service_type=COMPUTE_API_TYPE,
-            endpoint=instance.get_endpoint_for_service_type(
-                COMPUTE_API_TYPE,
-                region_name=instance.region_name,
-                interface=instance.interface,
-            )
-        )
-
-        return client
-
-이 부분에서 compute_client 를 생성 후,,,(솔직히 이게 맞는지 모르겠어요ㅠㅠㅠ)
+- self: <keystoneauth1.identity.generic.password.Password object at 0x7f9068498fa0>
+- session: <keystoneauth1.session.Session object at 0x7f9088a7eb20>
+- self._plugin: <keystoneauth1.identity.v3.password.Password object at 0x7f9078b7df10>
 
 .. code-block:: python
 
-    # openstackclient/compute/v2/server.py
-    def take_action(self, parsed_args):
-        data = compute_client.servers.list(search_opts=search_opts,
-                                           marker=marker_id,
-                                           limit=parsed_args.limit)
+    # site-packages/keystoneauth1/identity/v3/base.py
+    def get_auth_ref(self, session, **kwargs):
+        ...
+        resp = session.post(token_url, json=body, headers=headers,
+                                authenticated=False, log=False, **rkwargs)
+        ...
 
-
-compute_client.servers.list(search_opts=search_opts, marker=marker_id, limit=parsed_args.limit) 중 servers 의 list 메소드를 호출하게되면
+- token_url: \'http://211.37.148.128/identity/v3/auth/tokens\'
+- body: \'auth\' 정보
+- headers: {\'Accept\': \'application/json\'}
 
 .. code-block:: python
 
-    # venv/lib/python3.9/site-package/novaclient/v2/servers.py
-    def list(self, detailed=True, search_opts=None, marker=None, limit=None,
-             sort_keys=None, sort_dirs=None):
+    # site-packages/keystoneauth1/session.py
+    def post(self, url, **kwargs):
+        """Perform a POST request.
+
+        This calls :py:meth:`.request()` with ``method`` set to ``POST``.
+
+        """
+        return self.request(url, 'POST', **kwargs)
+
+.. code-block:: python
+
+    # site-packages/keystoneauth1/session.py
+    def request(self, url, method, json=None, original_ip=None,
+                user_agent=None, redirect=None, authenticated=None,
+                endpoint_filter=None, auth=None, requests_auth=None,
+                raise_exc=True, allow_reauth=True, log=True,
+                endpoint_override=None, connect_retries=None, logger=None,
+                allow=None, client_name=None, client_version=None,
+                microversion=None, microversion_service_type=None,
+                status_code_retries=0, retriable_status_codes=None,
+                rate_semaphore=None, global_request_id=None,
+                connect_retry_delay=None, status_code_retry_delay=None,
+                **kwargs):
+
         ...
-        if detailed:
-            detail = "/detail" # server list 를 호출해줬으니 detail 이 get 방식으로 호출된다.
+        resp = send(**kwargs)
         ...
-            servers = self._list("/servers%s%s" % (detail, query_string),
-                                     "servers")
-            result.extend(servers)
-            result.append_request_ids(servers.request_ids)
+        return resp
 
-            if not servers or limit != -1:
-                break
-            marker = result[-1].id
-        return result
+resp 는 **kwargs(headers, auth 정보) 를 \'http://211.37.148.128/identity/v3/auth/tokens\' 에서 다음과 같은 \"catalog\" 값으로 nova, keystone, cinder, glance 등 모든 컴포넌트들의 api 주소를 가져온다.
 
-해당 코드에서 server list 에 해당하는 데이터들을 result 에 할당하고 리턴한다.
+.. code-block:: bash
 
-- 추측...!!!
-    이 과정을 수행하며 compute_client 에 api 객체에 존재하는 entrypoint=\'http://211.37.148.128/compute/v2.1\'(예) 에 VM 리스트를 조회하는 URI로 GET 방식의 \"servers/detail\" 이 구성??되서 호출하지 않았나...라는 것이 제 추측입니다...
+    # resp 중 "catalog" nova 정보
+    "catalog":
+    [ ... {"endpoints": [{"id": "e7507720bc274e56b420466613be3f07", "interface": "public", "region_id": "RegionOne", "url": "http://211.37.148.128/compute/v2.1", "region": "RegionOne"}], "id": "3e7dec3e86ea4652ad633484b07fa368", "type": "compute", "name": "nova"}, ... ]
+
+업로드된 정보들은 clientmanger.ClientManager obect 의 session.Session object(session) 에 keystoneauth1.identity.generic.password.Password object(auth)에 keystoneauth1.access.access.AccessInfoV3 object(auth_ref)에  keystoneauth1.access.service_catalog.ServiceCatalogV3 object (\"service_catalog\" )에 저장되어 있다.
 
 4. nova 의 어떤 API를 호출하여 결과를 받아오나요? ( 어떤 URI 를 호출하나요? )
 ----------------------------------------------------------------------------------
-- server list 기준으로 \'http://211.37.148.128/compute/v2.1\servers/detail\' 를 호출해서 결과 값을 받아온 거 같습니다.
+- \'http://211.37.148.128/compute/v2.1\' 를 호출해서 결과 값을 받아온 거 같습니다.
 
 5. 결과를 이쁘게 table 형식으로 출력해주는 함수는 무엇일까요?
 ----------------------------------------------------------------------------------
