@@ -1,5 +1,6 @@
+===========================================================
 2주차 과제-2 - openstack server list 명령어 동작 원리 파악
-==========================================================
+===========================================================
 
 
 .. toctree::
@@ -437,7 +438,7 @@ openstackclient.compute.v2.server.ListServer 객체의 메소드 take_action 을
         ...
         return resp
 
-resp 는 **kwargs(headers, auth 정보) 를 \'http://211.37.148.128/identity/v3/auth/tokens\' 에서 다음과 같은 \"catalog\" 값으로 nova, keystone, cinder, glance 등 모든 컴포넌트들의 api 주소를 가져온다.
+resp 는 \*\*kwargs(headers, auth 정보) 를 \'http://211.37.148.128/identity/v3/auth/tokens\' 에서 다음과 같은 \"catalog\" 값으로 nova, keystone, cinder, glance 등 모든 컴포넌트들의 api 주소를 가져온다.
 
 .. code-block:: bash
 

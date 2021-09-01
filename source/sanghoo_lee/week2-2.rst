@@ -1,5 +1,5 @@
 OpenStack 팀 2주차 : openstack server list 명령어 동작 원리 파악
-==========================================================
+================================================================
 
 2주차 2번째 과제에 대한 정리 내용입니다.
 
@@ -31,6 +31,7 @@ OpenStackShell -> OpenStackShell ->  App
 
 a. main 함수의 OpenStackShell().run(argv) 통해 OpenStackShell object 가 생성된다.
 b. 해당 객체의 run() 메소드를 실행한다.
+
 argv = ['server', 'list'] 가 run 메소드의 인자로 넘겨진다.
 
 .. code-block:: python
@@ -323,7 +324,7 @@ self = {List Server} <openstackclient.compute.v2.server.ListServer object at 0x1
 
 
 3. openstackcli 는 어떻게 nova api 주소를 알아내나요? & 4. nova 의 어떤 API를 호출하여 결과를 받아오나요?
----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
 
 
 server list 명령어를 처리하는 과정중,
@@ -521,7 +522,7 @@ body = instance 정보
 
 
 5. 결과를 이쁘게 table 형식으로 출력해주는 함수는 무엇일까요?
---------------------------------------------------------
+----------------------------------------------------------------
 
 
 .. code-block:: python
@@ -566,6 +567,7 @@ _generate_columns_and_selector 메소드를 호출한다.
         :param column_names: sequence of strings containing names
                              of output columns
         """
+
 이 메소드를 통해  ('ID', 'Name', 'Status', 'Networks', 'Image', 'Flavor') 이 반환되어
 table 의 column 을 알 수 있다.
 
