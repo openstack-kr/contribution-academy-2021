@@ -27,6 +27,7 @@ openstack server list 를 하면 기본적으로 "ID", "Name", "Status", "Networ
 1. data 를 받아오는 곳은 API 를 호출하는 곳이다.
 
 - week2-2.rst 하단 참조
+
 self.api.client.get(url) 는 keystoneauth1/adapter.py 를 호출한다.
 
 .. code-block:: python
@@ -77,6 +78,7 @@ body = instance 정보
  'os-extended-volumes:volumes_attached' = {list: 1} [{'id': '0ab259fa-d64e-4898-9845-1798c8e0b0c5'}]
  'security_groups' = {list: 2} [{'name': 'default'}, {'name': 'default'}]
  __len__ = {int} 30
+
 ....
 
 
