@@ -49,7 +49,7 @@ ________________________________________________________________________________
     
      
      * 인스턴스 생성
-        .. image:: ../images/week2-1_4.PNG
+        .. image:: ../images/week2-1_4.png
             :height: 500
             :width: 700
             :scale: 100
@@ -62,7 +62,7 @@ ________________________________________________________________________________
      
       $ openstack floating ip create public 
 
-    .. image:: ../images/week2-1_6.PNG
+    .. image:: ../images/week2-1_6.png
         :height: 500
         :width: 700
         :scale: 100
@@ -78,7 +78,7 @@ ________________________________________________________________________________
 
      * floating ip 할당
 
-        .. image:: ../images/week2-1_7.PNG
+        .. image:: ../images/week2-1_7.png
             :height: 100
             :width: 1200
             :scale: 70
@@ -86,7 +86,7 @@ ________________________________________________________________________________
 
      *  할당 결과
 
-        .. image:: ../images/week2-1_8.PNG
+        .. image:: ../images/week2-1_8.png
          :height: 300
          :width: 1000
          :scale: 70
@@ -100,7 +100,7 @@ ________________________________________________________________________________
       $ openstack ip unset —port {할당한 floating ip}
      
      * 할당 해제 및 결과
-        .. image:: ../images/week2-1_10.PNG
+        .. image:: ../images/week2-1_10.png
             :height: 200
             :width: 700
             :scale: 100
