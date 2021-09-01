@@ -6,7 +6,7 @@ ___________________________________________________________
  1. $ openstack create -image=cirros-0.5.2-x86_64-disk --flavor=m1.tiny --network=public test_instance   
     
     * 인스턴스 생성
-        .. image:: ../images/week2-1_0.PNG
+        .. image:: ../images/week2-1_0.png
             :height: 500
             :width: 700
             :scale: 100
