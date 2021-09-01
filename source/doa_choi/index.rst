@@ -7,4 +7,5 @@ Doa Choi
 
    2week-1.rst
    2week-2.rst
+   test.rst
    팀_블로그_가이드.rst
