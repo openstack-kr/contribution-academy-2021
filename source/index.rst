@@ -18,7 +18,7 @@
    seunghyun_lim/index
    yoonsoo_lim/index
    jongsung_woo/index
-   jiwon_yoon/index
+   jiwon_yun/index
    bomi_sung/index
    jiho_ju/index
    doa_choi/index
