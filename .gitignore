@@ -5,3 +5,5 @@ venv
 .venv
 *.egg*
 .pytest_cache
+source/jian_lee/images/.DS_Store
+source/jian_lee/images/week2/.DS_Store
