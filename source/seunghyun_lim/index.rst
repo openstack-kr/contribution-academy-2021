@@ -4,4 +4,4 @@ Seunghyun Lim
 .. toctree::
    :maxdepth: 2
 
-   posts/index
+   posts/index.rst
