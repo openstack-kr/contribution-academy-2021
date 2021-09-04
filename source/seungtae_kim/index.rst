@@ -7,4 +7,3 @@ SEUNG TAE KIM
    week2-1.rst
    week2-2.rst
    week3.rst
-
