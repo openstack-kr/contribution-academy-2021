@@ -51,7 +51,7 @@
 
 **/usr/bin/python3.6** 실행한 후 아래의 예시처럼 위치를 알아낼 수 있다.
 
-.. image:: images/picture_2.PNG
+.. image:: images/picture_2.png
 
 openstack server list 처리 과정
 -----------------------------------------------------------------------
