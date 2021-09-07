@@ -1,4 +1,4 @@
-openstack server list 명령어 동작 원리 파악
+2주차 과제 - openstack server list 명령어 동작 원리 파악
 ======================================================================
 
 1. 인자로 입력받은 server list를 어떻게 구별해내는가?
@@ -8,7 +8,7 @@ openstack server list 명령어 동작 원리 파악
 
 .. code-block:: python
 
-    openstack server list
+   openstack server list
 
 +--------------------------------------+----------------+--------+---------------------------------------------------------+--------------------------+----------+
 | ID                                   | Name           | Status | Networks                                                | Image                    | Flavor   |
@@ -426,7 +426,7 @@ openstack server list 명령어는 다음의 테이블을 출력해준다.
 
 .. image:: images/picture_26.PNG
 
-다시 키워드를 formatters로 하여 검색하였으며 display.py: title=output formattersㄴ 와 table.py: Output formatters using prettytable가 유력해 보인다.
+다시 키워드를 formatters로 하여 검색하였으며 display.py: title=output formatters 와 table.py: Output formatters using prettytable가 유력해 보인다.
 
 .. code-block:: html
 
