@@ -64,11 +64,11 @@
 
     * 그리고 utils/__init__.py에 전달된 값들은 아래와 같다.
 
-    .. image:: images/field.png
+    .. image:: images/field.PNG
 
     |
 
-    .. image:: images/value.png
+    .. image:: images/value.PNG
 
     * 508L을 보면 getattr함수를 이용해 item에 field의 해당하는 값이 있으면
       data에 넣는것을 확인할 수 있다.
@@ -85,14 +85,14 @@
     * columns는 아까 item에 들어있는 field이름이랑 맞춰서 넣어야한다.
     * column_headers는 출력할 field의 이름을 넣으면 된다.
 
-    .. image:: images/columns.png
+    .. image:: images/columns.PNG
 
     |
 
-    .. image:: images/column_headers.png
+    .. image:: images/column_headers.PNG
 
 
 2. field 추가한 server list 출력
 --------------------------------------
 
-    .. image:: images/result.png
+    .. image:: images/result.PNG

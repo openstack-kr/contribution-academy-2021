@@ -51,7 +51,7 @@ openstack server list 명령어 동작 원리 파악
 
 **/usr/bin/python3.6** 실행한 후 아래의 예시처럼 위치를 알아낼 수 있다.
 
-.. image:: images/picture_2.png
+.. image:: images/picture_2.PNG
 
 openstack server list 처리 과정
 -----------------------------------------------------------------------
@@ -243,17 +243,17 @@ argv 인자 값은 app(cliff/app.py).App(Class Name)의 함수 run(argv)에게 �
 
 환경의 설정 값을 가지고 있는 namespace 정보를 options 변수로 반환해준다.
 
-.. image:: images/picture_3.png
+.. image:: images/picture_3.PNG
 
-.. image:: images/picture_4.png
+.. image:: images/picture_4.PNG
 
 그 다음으로 run_subcomman(remainder)로 값을 넘겨준다. # remainder -> server list
 
-.. image:: images/picture_5.png
+.. image:: images/picture_5.PNG
 
 argv 값을 다시 command_manager.find_command(argv)로 넘겨준다
 
-.. image:: images/picture_6.png
+.. image:: images/picture_6.PNG
 
 **def find_command(self, argv):**
 
@@ -303,7 +303,7 @@ found = server list 값을 넣은 후, commands[server list]로 넘겨주어 반
 
 server list에 대한 엔드 포인터 값을 받을 수 있었던 이유는 아래의 절차에 의한다
 
-.. image:: images/picture_7.png
+.. image:: images/picture_7.PNG
 
 find_command 함수는 command_manager 클래스의 있다.
 
@@ -325,30 +325,30 @@ find_command 함수는 command_manager 클래스의 있다.
    플러그인 cliff.formatter.list에서 namespace(cli)의 파라미터(server list)에 대한 처리를 하기 위해 namespace(cli) 엔드포인터 목록을 로딩하는 것 같다.
 
 
-.. image:: images/picture_8.png
+.. image:: images/picture_8.PNG
 
-.. image:: images/picture_9.png
+.. image:: images/picture_9.PNG
 
 이 처리가 끝난 후 commands에는 엔드 포인터 값이 담겨져 있는데
 
 server list의 경우 openstackclient.compute.v2.server.ListServer 에서 처리하는 것을 알 수 있다.
 
-.. image:: images/picture_10.png
+.. image:: images/picture_10.PNG
 
-.. image:: images/picture_11.png
+.. image:: images/picture_11.PNG
 
 cmd_factory에는 openstackclient.compute.v2.server.ListServer 엔드 포인트 값이 담겨서 반환된다.
 
-.. image:: images/picture_12.png
+.. image:: images/picture_12.PNG
 
-.. image:: images/picture_13.png
+.. image:: images/picture_13.PNG
 
 2. server list  라는 명령어를 처리하는 파일은 무엇인가?
 **********************************************************************
 
 따라서 server 파일의 ListServer 함수에서 처리한다는 것을 알 수 있다.
 
-.. image:: images/picture_15.png
+.. image:: images/picture_15.PNG
 
 3. openstackcli 는 어떻게 nova api 주소를 알아내나요?
 **********************************************************************
@@ -358,7 +358,7 @@ Namespace() 함수로 사용자의 환경 변수를 가져오게 된다.
 
 따라서 우선은 http://211.37.148.129/identity 주소에서 인증을 통해 얻을 수 있을 것이다.
 
-.. image:: images/picture_16.png
+.. image:: images/picture_16.PNG
 
 다음으로 1,2 과제를 진행하였을 때. server list 엔드 포인트 값을 가져왔었고
 
@@ -374,13 +374,13 @@ find_command 함수가 다음 값을 반환하는 것으로 끝났었는데 여�
 
 cmd_parser = cmd.get_parser(full_name) 이 실행되며
 
-.. image:: images/picture_17.png
+.. image:: images/picture_17.PNG
 
-.. image:: images/picture_18.png
+.. image:: images/picture_18.PNG
 
 openstackclient.compute.v2.server.ListServer 에서 구문을 분석하여 리턴받는다.
 
-.. image:: images/picture_19.png
+.. image:: images/picture_19.PNG
 
 openstackclient.compute.v2.server.ListServer
 
@@ -388,19 +388,19 @@ openstackclient.compute.v2.server.ListServer
 
 **하지만 log를 살펴보다 compute->openstackclient.compute.client를 살펴볼 수 있었다.**
 
-.. image:: images/picture_20.png
+.. image:: images/picture_20.PNG
 
 compute.client 의 코드에서 LOG.debug 정보를 출력하는 코드가 있다.
 
-.. image:: images/picture_21.png
+.. image:: images/picture_21.PNG
 
 따라서 openstack server list --debug 명령어를 입력하여 아래의 정보를 얻을 수 있었다.
 
-.. image:: images/picture_22.png
+.. image:: images/picture_22.PNG
 
 그렇기에 openstackclient-> compute_v2 -> APIv2 에서 API에 대한 처리를 하며
 
-.. image:: images/picture_23.png
+.. image:: images/picture_23.PNG
 
 반환되는 Client 값에는
 
@@ -409,14 +409,14 @@ compute.client 의 코드에서 LOG.debug 정보를 출력하는 코드가 있�
 
 **http://211.37.148.129/compute/v2.1** NOVA API 처리하는 주소가 있다
 
-.. image:: images/picture_24.png
+.. image:: images/picture_24.PNG
 
 5. 결과를 이쁘게 table 형식으로 출력해주는 함수는 무엇일까요?
 **********************************************************************
 
 openstack server list 명령어는 다음의 테이블을 출력해준다.
 
-.. image:: images/picture_25.png
+.. image:: images/picture_25.PNG
 
 위의 테이블 형식을 찾기 위해 아래의 명령어를 사용하였다.
 
@@ -424,7 +424,7 @@ openstack server list 명령어는 다음의 테이블을 출력해준다.
 
    grep -R "+-*-+"
 
-.. image:: images/picture_26.png
+.. image:: images/picture_26.PNG
 
 다시 키워드를 formatters로 하여 검색하였으며 display.py: title=output formattersㄴ 와 table.py: Output formatters using prettytable가 유력해 보인다.
 
@@ -432,11 +432,11 @@ openstack server list 명령어는 다음의 테이블을 출력해준다.
 
    grep -R formatters
 
-.. image:: images/picture_27.png
+.. image:: images/picture_27.PNG
 
 그 중 table의 emit_list를 변경하여 출력하였다.
 
-.. image:: images/picture_28.png
+.. image:: images/picture_28.PNG
 
-.. image:: images/picture_29.png
+.. image:: images/picture_29.PNG
 
