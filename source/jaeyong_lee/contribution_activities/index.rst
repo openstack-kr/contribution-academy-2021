@@ -1,8 +1,11 @@
-Jaeyong Lee
+contribution activities
 ==========================================================
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: 목차:
 
-   assignment/index
-   contribution_activities/index
+   story2006754.rst
+
+
+
