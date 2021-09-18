@@ -10,3 +10,5 @@ Yoonsoo Lim
     week2-1.rst
 
     week3.rst
+
+    nova-option[name].rst
