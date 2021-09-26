@@ -10,3 +10,4 @@ SEUNG TAE KIM
         week3
         week4
         week5
+        week6
