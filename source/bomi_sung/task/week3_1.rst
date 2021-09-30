@@ -1,7 +1,6 @@
-========================================
+=============================================
 openstack server list 에 field 추가하기
-========================================
-
+=============================================
 -----
 목표
 -----
@@ -52,7 +51,7 @@ openstack server list 의 기본 결과 필드에 "Project ID" 와 "Created At" 
         mixed_case_fields = []
 
 좀 더 코드를 분석하다보면 아래 부분에서 #support for additional columns 주석을 볼 수 있는데 이 부분에서 힌트를 얻어 Project ID 값을 추가하려면
-column_headers(테이블에 컬럼명) 에 ``Project ID`` 를 append 하고 columns(컬럼의 데이터 값) 에는 ``tenant_id`` 를 append 하면 된다는 것을 알 수 있었다.
+column_headers(테이블의 컬럼명) 에 ``Project ID`` 를 append 하고 columns(컬럼의 데이터 값) 에는 ``tenant_id`` 를 append 하면 된다는 것을 알 수 있었다.
 
 .. code-block:: python
 
