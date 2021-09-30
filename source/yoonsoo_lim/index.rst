@@ -12,3 +12,7 @@ Yoonsoo Lim
     week3.rst
 
     nova-option[name].rst
+
+    devstack-multi_node.rst
+
+    python-novaclient_setting.rst
