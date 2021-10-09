@@ -79,7 +79,7 @@ body = instance 정보
  'security_groups' = {list: 2} [{'name': 'default'}, {'name': 'default'}]
  __len__ = {int} 30
 
-....
+
 
 
 이와 같이 모든 정보가 전달되고 있음을 알 수 있다.
