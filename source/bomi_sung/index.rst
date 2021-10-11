@@ -13,3 +13,9 @@ Bomi sung
     :caption: Week 3
 
     task/week3_1.rst
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Contribution
+
+    task/contribution.rst
