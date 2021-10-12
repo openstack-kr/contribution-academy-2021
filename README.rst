@@ -7,6 +7,6 @@ This repository contains contribution activities related with OpenStack project 
  
  * 컨트리뷰톤 홈페이지: https://www.oss.kr/contribution_academy
  * 오픈스택 한국 커뮤니티 페이스북: https://www.facebook.com/groups/openstack.kr
- * rst 문서: https://contribution-academy-2021.readthedocs.io/ko/latest/
+ * rst 문서: https://openstack-kr-contribution-academy-2021.readthedocs.io/ko/latest/
 
 
