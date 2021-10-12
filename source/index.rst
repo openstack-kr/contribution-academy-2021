@@ -6,22 +6,56 @@
 
 .. toctree::
    :maxdepth: 2
-   :caption: 목차:
+   :caption: 우리팀 소개
+
+   introduce/index
+   goal/index
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: 개인 과제
 
    development_setup_guide/index
    contributors/index
-   jinseok_kim/index
-   seungtae_kim/index
-   jaeyong_lee/index
-   jian_lee/index
-   sanghoo_lee/index
-   seunghyun_lim/index
-   yoonsoo_lim/index
-   jongsung_woo/index
-   jiwon_yun/index
-   bomi_sung/index
-   jiho_ju/index
-   doa_choi/index
+   Assignment/index
+   issue/index
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: 개발 환경 만들기
+
+   devstack_guide_install/index
+   devstack_guide_cli/index
+   openstack_basic_cli/index
+   openstack_project_development/index
+   openstack_pycharm_setup/index
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: OpenStack에 기여하는 방법
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: openstackclient 코드 구조
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: 테스트
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: 우리팀의 성과
+
+
+
+
+
 
 
 이 문서에서 검색
