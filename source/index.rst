@@ -50,7 +50,7 @@
    :maxdepth: 2
    :caption: 개인 과제
 
-   assignment/index
+   Assignment/index
 
 
 
