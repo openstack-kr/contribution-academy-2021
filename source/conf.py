@@ -37,7 +37,7 @@ source_suffix = {
 }
 
 # Changed in version 4.0 Renamed master_doc to root_doc.
-# root_doc = 'index.rst'
+# root_doc = '2week-1.rst'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
