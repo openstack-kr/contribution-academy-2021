@@ -1,0 +1,105 @@
+`story#: \"openstack image --accept\" fails if original image has tags attached <https://storyboard.openstack.org/#!/story/2006754>`_
+===========================================================================================================================================
+
+해당 글은 "openstack image set --accept " 명령어 수행 시  이미지에
+태그가 붙어 있으면 오류가 생긴다는 문제를 분석한 글입니다.  
+
+
+0. 사전 지식 및 환경 (horizion 사용)
+___________________________________________________________
+ 1. 생성한 image -> ubuntu (49333744-5aba-4805-8ac3-0df13c95a777 )
+
+ 2. image 를 생성한 프로젝트 -> test-img2 (273e212dca614365943e07b37adcbb53)
+
+ 3. image 를 공유받을 프로젝트 -> test-img (5fbcbe50ad9b48468ace6c475fa87611)
+
+ 4. image-member 란??
+
+     1. image-member 란 이미지를 생성한 프로젝트 뿐만 아니라 다른 프로젝트도 해당 이미지를 사용할 수 있도록
+        image에 자신을 사용할 프로젝트를 명시해주는 것이다. 
+        간단하게 말하면 A 에서 생성한 이미지를 B도 사용할 수 
+        있도록 A의 이미지에 B의 프로젝트 ID를 알려주는 것이다.
+
+
+     2. image-member 에는 3가지 상태가 있는데   pending, accept, reject 이 있다.
+
+       * pending: 이미지에 멤버를 등록한 후 등록된 프로젝트한테 accpet을 할지 reject을 할지 물어보는 상태(default)
+       * accept : 이미지 공유를 "받을" 프로젝트에서 해당 이미지를 사용하겠다라고 명시한 상태
+       * reject : 이미지 공유를 "받을" 프로젝트에서 해당 이미지를 사용하지 않겠다고 명시한 상태
+
+
+
+1. test-img2 의 ubuntu 이미지에 tag 등록
+___________________________________________________________________________________________________________________
+        
+ 1. ubuntu 이미지에 태그 생성    
+     .. code-block::
+
+      $ source openrc admin test-img2
+      $ openstack image set --tag test-img 49333744-5aba-4805-8ac3-0df13c95a777
+
+
+    .. image:: images/work1-2.png
+        :height: 500
+        :width: 700
+      
+
+2. image member list에 test-img 등록하기
+_________________________________________________________________________________
+ 1. member list create 명령어
+     .. code-block::
+     
+      $ openstack image add project 49333744-5aba-4805-8ac3-0df13c95a777 5fbcbe50ad9b48468ace6c475fa87611
+
+    .. image:: images/work1-3.png
+        :height: 300
+        :width: 700
+
+
+ 2. member list 확인
+    
+     .. code-block::
+
+      $ openstack image member list 49333744-5aba-4805-8ac3-0df13c95a777
+
+     .. image:: images/work1-4.png
+            :height: 300
+            :width: 700
+
+
+3. image set --accept 명령어 실행해보기
+_________________________________________________________________________________
+    
+ 1. tenent 변경 및 member list 확인
+     .. code-block::
+
+      $ source openrc admin test-img
+      $ openstack image member list 49333744-5aba-4805-8ac3-0df13c95a777
+
+    .. image:: images/work1-5.png
+            :height: 300
+            :width: 700
+
+
+ 2. accept 상태로 이미지 변경 
+     .. code-block::
+
+      $ openstack image set --accept 49333744-5aba-4805-8ac3-0df13c95a777
+      $ openstack image member list ubuntu
+
+     .. image:: images/work1-6.png
+            :height: 300
+            :width: 700
+
+ 3. horizon 에서 결과 확인
+
+    .. image:: images/work1-7.png
+            :height: 300
+            :width: 700
+
+4. 분석
+_________________________________________________________________________________
+
+    테스트 결과 이미지에 태그가 있더라고 --accpet 명령어가 잘 실행됨을 볼 수 있었다.
+    아마 작성자 분의 문제는 source openrc 명령어에서 image 권한이 없는 사용자 혹은 프로젝트에서
+    해당 image를 다루려고 했기 때문에 403 권한 오류가 나온 듯 하다.
