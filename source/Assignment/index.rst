@@ -1,19 +1,19 @@
-Assignment
+==========================================================
+개인 과제
 ==========================================================
 
 .. toctree::
    :maxdepth: 1
-   :caption: Assignment
 
-   bomi_sung/index
-   doa_choi/index
-   jaeyong_lee/index
-   jian_lee/index
-   jiho_ju/task/index
-   jinseok_kim/index
-   jiwon_yun/homework/index
-   jongsung_woo/index
-   sanghoo_lee/index
-   seunghyun_lim/index
-   seungtae_kim/index
-   yoonsoo_lim/index
+   assignment/bomi_sung/index
+   assignment/doa_choi/index
+   assignment/jaeyong_lee/index
+   assignment/jian_lee/index
+   assignment/jiho_ju/task/index
+   assignment/jinseok_kim/index
+   assignment/jiwon_yun/homework/index
+   assignment/jongsung_woo/index
+   assignment/sanghoo_lee/index
+   assignment/seunghyun_lim/index
+   assignment/seungtae_kim/index
+   assignment/yoonsoo_lim/index
