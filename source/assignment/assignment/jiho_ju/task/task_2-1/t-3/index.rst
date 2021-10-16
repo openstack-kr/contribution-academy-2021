@@ -2,8 +2,6 @@
 ==========================================================
 
 
-.. toctree::
-
 Floating IP 는 Fixed IP 처럼 자동으로 인스턴스에 default 로 할당되어 있지 않기 때문에 직접 인스턴스에 attach 해줘야 한다. 사용자들은 external network 로부터 인스턴스에 대한 연결성을 보장해주기 위해 cloud administrator 에 의해 정의된 다른 pool 부터 floating IP를 **grab** 해와야 한다.
 (참고: `Blog <https://www.mirantis.com/blog/configuring-floating-ip-addresses-networking-openstack-public-private-clouds/>`_)
 

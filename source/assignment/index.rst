@@ -9,9 +9,9 @@
    assignment/doa_choi/index
    assignment/jaeyong_lee/index
    assignment/jian_lee/index
-   assignment/jiho_ju/task/index
+   assignment/jiho_ju/index
    assignment/jinseok_kim/index
-   assignment/jiwon_yun/homework/index
+   assignment/jiwon_yun/index
    assignment/jongsung_woo/index
    assignment/sanghoo_lee/index
    assignment/seunghyun_lim/index
