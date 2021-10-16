@@ -4,3 +4,5 @@ openstackclient 코드 구조
 
 .. toctree::
    :maxdepth: 1
+
+   openstackclient/index
