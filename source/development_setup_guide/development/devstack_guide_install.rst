@@ -4,7 +4,7 @@
 
 본 글에서는 클라우드 가상 머신에서 DevStack 을 설치하는 방법에 대해서 다룹니다.
 
-추가 디스크를 연결하지 않았다면, (Optinal)은 생략합니다.
+추가 디스크를 연결하지 않았다면, **(Optinal)은 생략** 합니다.
 
 
 **오픈스택을 리눅스 환경에서 자동으로 구축해주는 DevStack**
@@ -13,24 +13,27 @@
 
 |
 
-주요 컴포넌트
+주요 구성요소
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-**DevStack을 이용하면 이 컴포넌트들을 쉽게 구성할 수 있습니다.**
+**DevStack을 이용하면 다음과 같은 구성 요소들을 쉽게 구성할 수 있습니다.**
  - **Nova**: 가상의 서버를 생성하기 위한 Nova
  - **Glance**: 서버의 기동 이미지를 다루는 Glance
  - **Cinder**: 블록 스토리지를 제어하기 위한 Cinder
  - **Neutron**: 가상의 네트워크를 만들기 위한 Neutron
  - **Keystone**: 사용자에 대한 인증을 처리하는 Keystone
- - **Placement**: 자원을 관리하기 위한 Placement
- - **Horizon DashBoard**: Horizon 대시보드를 통해 GUI 환경에서 오픈스택의 핵심 컴포넌트 API를 컨트롤할 수 있습니다.
+ - **Swift**: 오브젝트 스토리지를 구성하기 위한 Swift
+ - **Horizon DashBoard**: Horizon 대시보드를 통해 GUI 환경에서 오픈스택의 구성요소들을 컨트롤할 수 있습니다.
 
 |
 
-DevStack 지원 Linux OS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DevStack 지원 Linux OS 및 최소사양
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  - Ubuntu
  - CentOS
  - OpenSUSE
+ - RAM: 8GB
+ - CPU: 2cores
+ - HDD: 60GB
 
 |
 
