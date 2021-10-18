@@ -73,7 +73,7 @@ DevStack 지원 Linux OS 및 최소사양
 
 |
 
- - 다음과 같은 명령으로 /opt/stack 경로에 마운트 합니다.
+ - 다음과 같은 명령으로 /opt/stack 경로에 마운트 합니다. 
 
  .. code-block:: none
 
