@@ -97,7 +97,7 @@ OpenStack Sandbox 저장소를 이용해서 2인 1조로 코드 리뷰 연습하
 
 - 위의 코드 리뷰 화면 상단에 Base라고 되어 있는 부분을 Patchset1 로 변경하고 코드 수정을 완료하면 코드 리뷰 남겨준 사람에게 코드를 수정했다고 언급해주고 Done을 클릭합니다.
 
-- (본인이이 커밋한 사람이 아니라 리뷰를 남긴 사람일 때 해당)
+- (본인이 커밋한 사람이 아니라 리뷰를 남긴 사람일 때 해당)
 
 .. image:: https://miro.medium.com/max/700/1*Lxko2Bc0rolgsKLm7VTgyw.png
    :width: 1000px

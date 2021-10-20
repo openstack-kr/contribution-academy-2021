@@ -6,7 +6,7 @@ OpenStack Stackalytics 알아보기
 1. Stackalytics란?
 ------------------------------------------------
 
-Stackalytics란 오픈솟, Gerrit, Github OpenStack 저장소, Launchpad, Github, openstack.org, OpenStack mailing lists 등으로부터 수집된 정보들을 시각화해서 보여주는 웹 페이지입니다.
+Stackalytics란 오픈소스, Gerrit, Github OpenStack 저장소, Launchpad, Github, openstack.org, OpenStack mailing lists 등으로부터 수집된 정보들을 시각화해서 보여주는 웹 페이지입니다.
 
 이 페이지에서 어떤 회사가 OpenStack을 리뷰하고 있는지, 주로 리뷰되는 모듈은 어떤 것인지, 어떤 maintainer가 리뷰를 활동적으로 참여하고 있는지 등을 확인할 수 있으며, 버전별 관리 상황 등도 함께 확인이 가능합니다.
 
