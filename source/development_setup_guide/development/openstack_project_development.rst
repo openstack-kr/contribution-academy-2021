@@ -111,7 +111,7 @@ openstackclient 는 명령줄 도구로 오픈스택 구성요소 CLI 를 관리
  .. code-block:: none
 
     macOS/linux: source venv/bin/activate
-    window: activate.bat
+    windows: activate.bat
 
 |
 
