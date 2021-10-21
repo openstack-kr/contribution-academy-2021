@@ -1,8 +1,9 @@
+==========================================================
 Contributors
 ==========================================================
 
 .. toctree::
-    :maxdepth: 2
-    :caption: 목차:
+    :maxdepth: 1
+    :caption: Gerrit
 
-    gerrit/index
+    gerrit/index.rst
