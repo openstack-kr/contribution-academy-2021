@@ -1,8 +1,8 @@
-==========================================================
-OpenStack 에 기여하는 방법
+Contributors
 ==========================================================
 
-.. toctree::
-   :maxdepth: 1
-
-   gerrit/index.rst
+    .. toctree::
+       :maxdepth: 2
+       :caption: 목차:
+        gerrit/index
+        images
