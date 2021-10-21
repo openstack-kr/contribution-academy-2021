@@ -23,3 +23,10 @@ seungtae kim
 
        task/week4.rst
        task/week5.rst
+
+
+    .. toctree::
+       :maxdepth: 1
+       :caption: Final
+
+       task/week7.rst
