@@ -13,3 +13,9 @@ Jiwon Yun
    :caption: Week 3
 
    task/3week.rst
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Week 3
+
+   task/4week.rst
