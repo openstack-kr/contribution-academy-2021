@@ -4,10 +4,9 @@
 
 .. toctree::
    :maxdepth: 1
-   :caption: 해결
+   :caption: 이슈 해결
 
-   accomplish/issue/story2006754.rst
-   accomplish/issue/story2008816.rst
+   accomplish/issue/index.rst
 
 
 .. toctree::
