@@ -46,7 +46,7 @@ PyCharm 에서 parameters 와 Environment variables 설정하기
     OS_USERNAME / admin
     OS_PASSWORD / secret
     OS_REGION_NAME / RegionOne
-    OS_REGION_NAME / 3
+    OS_IDENTITY_API_VERSION / 3
     OS_AUTH_TYPE / password
     OS_AUTH_URL / http://IP/identity
     OS_USER_DOMAIN_ID / default
