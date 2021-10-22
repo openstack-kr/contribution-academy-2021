@@ -3,6 +3,6 @@ openstackclient 코드 구조
 ==========================================================
 
 .. toctree::
-   :maxdepth: 1
+    :maxdepth: 1
 
-   openstackclient/index
+    openstackclient/nova_api.rst
