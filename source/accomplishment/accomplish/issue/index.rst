@@ -10,3 +10,4 @@
    story2008816.rst
    story2002158.rst
    story2009150.rst
+   story1760528.rst

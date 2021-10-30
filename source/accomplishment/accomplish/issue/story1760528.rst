@@ -1,0 +1,113 @@
+`story#: \Cannot remove shared image from project <https://storyboard.openstack.org/#!/story/1760528>`_
+===========================================================================================================================================
+
+요약:  프로젝트 A에서 생성한 image를 멤버에 등록한 후 프로젝트 B에서 image를 공유 받습니다.  
+그 후 멤버를 삭제하면 프로젝트 B에서 공유된 이미지가 사라져야 하는 것이 아닌지에 대한 이슈였습니다. 
+해당 현상은 개발자의 의도에 맞는 현상이었으며, 버전 업데이트 과정에서 명령어 대한 설명 누락이 있었기에 발생한 문제였습니다.
+
+
+0. 사전 지식 및 환경 (horizion 사용)
+___________________________________________________________
+ 1. 생성한 image -> ubuntu (49333744-5aba-4805-8ac3-0df13c95a777)
+
+ 2. image 를 생성한 프로젝트 -> test-img (273e212dca614365943e07b37adcbb53)
+
+ 3. image 를 공유받을 프로젝트 -> test-img2 (5fbcbe50ad9b48468ace6c475fa87611)
+
+
+
+1. 문제 재현
+___________________________________________________________________________________________________________________
+        
+ 1. 생성된 이미지 멤버 등록 및 accept `(자세한 과정은 링크와 동일) <https://openstack-kr-contribution-academy-2021.readthedocs.io/ko/latest/accomplishment/accomplish/issue/story2006754.html>`_    
+     
+     .. image:: images/1760528-1.png
+        :height: 400
+        :width: 700
+      
+ 2. 멤버 삭제
+     .. code-block::
+
+        $ openstack image remove project ubuntu test-img2
+
+ 3. 환경변수 변경 및 test-img2 프로젝트에서 이미지를 이용한 인스턴스 생성
+     .. code-block::
+
+        $ source opensrc admin test-img2  // test-img2 프로젝트로 환경 변수 설정
+        $ openstack server create --image=ubuntu --flavor=m1.small --network=public cli_instance 
+
+     .. image:: images/1760528-2.png
+        :height: 500
+        :width: 700
+
+
+     .. image:: images/1760528-3.png
+        :height: 500
+        :width: 700
+   
+     다음과 같이 이미지를 공유한 멤버를 삭제했음에도 불구하고 여전히 공유받은 이미지를 사용할 수 있음을 확인 할 수 있습니다.
+     (인스턴스를 공유받은 이미지로 만들었는데 인스턴스가 작동한다는 의미)
+
+
+2. member 가 삭제되어도 공유가 가능한 이유
+_________________________________________________________________________________
+ 1. 같은 팀의 임승현 멘티님과 서로 해결 중인 이슈를 공유하다가 
+    —project 옵션을 사용하게 되면 자동으로 image 의 owner 가 
+    —project 옵션 뒤에 오는 프로젝트로 설정됨을 알 수 있었습니다.
+
+     .. code-block::
+     
+        $ openstack image set --project test-img2 --accept 49333744-5aba-4805-8ac3-0df13c95a777
+        $ openstack image member list ubuntu
+
+    해당 명령어 에서 —project test-img2 를 사용하기 때문에 ubuntu 이미지의 소유권이 test-img2로 넘어가게 됩니다. 
+    따라서 멤버가 사라지게 되더라도 image 의 소유권은 test-img2가 가지고 있기 때문에 해당 프로젝트에서 계속 이미지를 볼 수 있습니다.
+
+
+ 
+
+3. 많은 사람들이 해당 내용을 놓치게 된 이유
+_________________________________________________________________________________
+    
+ 1. 현재 openstack image 관련 command cli 문서는 다음과 같습니다. 
+
+     `해당 문서 <https://docs.openstack.org/python-openstackclient/xena/cli/command-objects/image-v2.html>`_ 
+     를 보면 아래 그림과 같이 —accpet —pending —reject 에 대한 설명이 짧게만 존재 합니다.
+    
+        .. image:: images/1760528-4.png
+            :height: 400
+            :width: 700
+
+
+     하지만 이전 버젼인 `pike <https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/image.html>`_
+     문서를 살펴보게 되면,  —projcet 인자를 넘겨주게 되면 소유권이 변경된다는 점을 강조하고 있었습니다.
+
+
+        .. image:: images/1760528-5.png
+            :height: 500
+            :width: 700
+
+4. 문서 수정 PR 및 코멘트 제작
+__________________________________________________________________________________
+
+ 1. 같은 팀의 승현님과 누락된 설명을 추가하고 각자 작업하고자 했던 story에 해당 링크를 첨부한 comment를 남겼습니다.
+    
+     1. `PR 내용 <https://review.opendev.org/c/openstack/python-openstackclient/+/813393>`_
+
+     image.py 의 SetImage 함수에 존재하는 해당 인자들의 help 에 누락되었던 내용을 추가 해주었습니다. 
+     (SetImage 의 help를 수정해주면 내부 함수에 의해 doc이 자동적 수정되어 빌드됩니다!!)
+    
+        .. image:: images/1760528-6.png
+            :height: 500
+            :width: 700
+
+     2. 코멘트 작성
+
+     해당 이슈를 제기한 스토리에 코멘트를 달아 해당 이슈가 일어나게 된 배경(문서 누락)에 대해
+     설명하고 저희가 올린 PR 링크를 같이 첨부하여 해당 이슈를 해결했습니다. 
+        
+        .. image:: images/1760528-7.png
+            :height: 300
+            :width: 700
+
+   
