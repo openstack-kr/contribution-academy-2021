@@ -9,3 +9,4 @@ Command 추가
 
    image_create_task.rst
    task_show.rst
+   hypervisor_servers.rst

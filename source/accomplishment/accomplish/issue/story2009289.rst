@@ -1,0 +1,89 @@
+story#: \"hypervisor list --matching\" There is a missing value in nova api 2.53
+=======================================================================================================
+
+
+``원인파악``
+----------------
+
+openstack hypervisor list 의 --matching 이라는 옵션이 존재하는데
+이 옵션은 패턴을 사용하여 그 패턴에 일치하는 hypervisor 목록을 보여주는 옵션이다.
+문제는 여기서 목록이 출력이 되는데 그중 ``Hypervisor Type`` 이랑 ``Host IP`` 필드가 출력이 되질 않는 이슈가 있어
+스토리보드에 올리고 패치를 진행하였다.
+
+1. 문제의 명령어
+-------------------
+
+    \'openstack hypervisor list —matching lys-wallaby\' 를 했을경우 아래와 같이 누락된 값이 있다.
+
+    .. image:: images/2009289-1.png
+
+    코드와 api문서를 보니 nova api 버전에 따라 실행되는 api가 다른것을 확인했다.
+    일단 nova api 2.53보다 낮으면 \'/os-hypervisors/{hypervisor_hostname_pattern}/search\' api라는 api를 호출하는데 아래와 같은 값들을  Response해준다.
+
+    .. image:: images/2009289-2.png
+
+    위에 값중에는 누락된 값들이 없으니 당연히 출력이 안된다.
+    그러면 누락된 값을 ``Response`` 해주는 api를 호출하여 처음에 패치를 진행했는데 멘토님께서 코드리뷰때 이 방식은 ``하위버전을 고려한 방식`` 이 아니라고 말씀해주셨다!
+
+    그래서 나는 compute(nova) API version이 2.53보다 낮으면 지금과 같이 값이 누락되게 납두었고, 2.53이상일때는 정상적으로 출력이 되게 패치를 진행하였다.
+
+
+2. 하위버전을 고려한 코드 수정
+------------------------------
+
+    먼저 수정할 코드는 ``openstackclient/compute/v2/hypervisor.py`` 의 ``class ListHypervisor(command.Lister)`` 이다.
+    take_action()부분을 보면 아래와 같이 되어있다,
+
+    .. code-block:: python
+
+        ..
+        if parsed_args.matching:
+            data = compute_client.hypervisors.search(parsed_args.matching)
+        else:
+            data = compute_client.hypervisors.list(**list_opts)
+        ..
+
+    이 부분을 아래와 같이 수정을 해줬다.
+
+    .. code-block:: python
+
+        if parsed_args.matching:
+            # compute(nova) api version에 따라 detailed를 전달하냐 안하냐로 나눴다.
+            if compute_client.api_version < api_versions.APIVersion('2.53'):
+                data = compute_client.hypervisors.search(parsed_args.matching)
+            else:
+                data = compute_client.hypervisors.search(parsed_args.matching,
+                                                         detailed=True)
+        else:
+            data = compute_client.hypervisors.list(**list_opts)
+
+    detailed가 뭐길래 저렇게 수정했냐면! search 함수를 다시 봐야한다.
+
+    .. code-block:: python
+
+        def search(self, hypervisor_match, servers=False, detailed=False):
+            if self.api_version >= api_versions.APIVersion('2.53'):
+                url = ('/os-hypervisors%s?hypervisor_hostname_pattern=%s' %
+                        # 여기서 detailed가 있으면 /os-hypervisors/detail 라는 API를 호출하게 되어있다,
+                        # 저 API를 호출했을때 Response값에 Hypervisor Type과 Host IP가 있어 2.53보다 높은 버전에선
+                        # 이제 정상적으로 출력이 된다.
+                       ('/detail' if detailed else '',
+                        parse.quote(hypervisor_match, safe='')))
+                if servers:
+                    url += '&with_servers=True'
+            else:
+                if detailed:
+                    raise exceptions.UnsupportedVersion(
+                        _('Parameter "detailed" requires API version 2.53 or '
+                          'greater.'))
+                target = 'servers' if servers else 'search'
+                url = ('/os-hypervisors/%s/%s' %
+                       (parse.quote(hypervisor_match, safe=''), target))
+            return self._list(url, 'hypervisors')
+
+
+``느낀점``
+----------
+
+패치를 하거나 명령어를 구현하게 된다면 무조건 된다고 끝난게 아니라 하위버전을 고려하는 방식으로
+진행을 하여야 한다고 멘토님께서 매번 이야기를 해주셔서 정말 큰 깨달음을 얻게되었다!
