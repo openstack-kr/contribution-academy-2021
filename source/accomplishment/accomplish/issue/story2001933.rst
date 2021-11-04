@@ -1,0 +1,50 @@
+`story#: Show volume delete_on_termination <https://storyboard.openstack.org/#!/story/2001933>`_
+=======================================================================================================
+
+0. 이슈 분석
+___________________________________________________________
+
+openstack shell 과 nova shell 에서 같은 기능을 담당하는 명령어의 출력 값이 상반되는 이슈입니다.
+
+nova show [서버명] 명령어의 경우 delete_on_termination : true 값을 출력하지만
+
+openstack server show [서버명]의 경우 delete_on_termination : true 값이 출력되지 않음
+
+ .. image:: images/2001933-1.png
+            :height: 500
+            :width: 700
+
+ -> Nava Command
+
+
+ .. image:: images/2001933-2.png
+            :height: 500
+            :width: 700
+
+ -> Openstack Command
+
+
+1. 해결 방안
+___________________________________________________________
+
+ .. image:: images/2001933-3.png
+            :height: 500
+            :width: 700
+
+ -> Merged 패치 확인
+
+해결 방안은 간단하게도
+
+openstack 명령어 실행 시 옵션으로 2.3 버전을 명시해주면 된다.
+
+openstack server show --os-compute-api-version 2.3
+
+
+2. 느낌점
+___________________________________________________________
+
+사실 위의 패치된 내용을 확인하기 전에 코드를 하나하나 살펴보았는데 마지막에 패치 내용에 대해 알게 되었다.
+
+이슈에 대한 코드를 살펴보기 전에, 오래된 이슈일 경우 업데이트되어 해당 이슈가 해결되었는지
+
+버전, 공식 문서 등을 찾아보면서 사전 조사를 철저히 하는 것이 첫 단추를 잘 채우는 방법이란 걸 체감했다.
