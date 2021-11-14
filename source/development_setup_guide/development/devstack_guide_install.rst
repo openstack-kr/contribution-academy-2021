@@ -239,7 +239,7 @@ local.conf 설정 및 가상의 public network 설정
 
 |
 
- - mybr0 인터페이스에 할당된 사설 아이피에 대한 패킷을 postrouting 체인을 선언해 외부 네트워크에서 액세스가 가능하도록 NAT 규칙을 설정을 합니다.
+ - 사설 네트워크에서 외부 통신을 할 수 있도록 SNAT 설정을 합니다.
 
  .. code-block:: none
 
