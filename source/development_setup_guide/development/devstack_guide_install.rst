@@ -239,7 +239,7 @@ local.conf 설정 및 가상의 public network 설정
 
 |
 
- - 사설 네트워크에서 외부 통신을 하기 위해 SNAT 설정을 합니다.
+ - 사설 네트워크에서 외부 통신을 할 수 있도록 SNAT 설정을 합니다.
 
  .. code-block:: none
 
